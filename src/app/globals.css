@@ -1,0 +1,83 @@
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+:root {
+  /* Surfaces */
+  --background: #F4F1E6;
+  --card: #FCFAF5;
+  --card-border: #DFD9C4;
+
+  /* Text */
+  --text-primary: #1E1B18;
+  --text-secondary: #7A756B;
+  --text-muted: #8A8577;
+
+  /* Accent */
+  --accent: #C98A27;
+
+  /* Signal colors (gains / losses) */
+  --positive: #556B2F;
+  --positive-strong: #3D5636;
+  --negative: #A04028;
+
+  /* Background art only — do not use for UI/text */
+  --art-amber: #EFB07A;
+  --art-terracotta: #C9793F;
+  --art-sage: #7C9070;
+  --art-rust: #A64B3F;
+  --art-forest: #4A6741;
+}
+
+.dark {
+  /* Surfaces */
+  --background: #1B1815;
+  --card: #242019;
+  --card-border: #3A342A;
+
+  /* Text */
+  --text-primary: #F2EEE3;
+  --text-secondary: #B5AD9C;
+  --text-muted: #948C79;
+
+  /* Accent */
+  --accent: #E0A54B;
+
+  /* Signal colors (gains / losses) — lightened versions of the light-mode
+     hues so they still hit AA contrast against a dark background. */
+  --positive: #8CAA63;
+  --positive-strong: #A6C583;
+  --negative: #D97A5C;
+
+  /* Background art — unchanged; the ribbon illustration is only used on
+     the cream login background today, not on a dark surface. */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+
+  --color-accent: var(--accent);
+
+  --color-positive: var(--positive);
+  --color-positive-strong: var(--positive-strong);
+  --color-negative: var(--negative);
+
+  --color-art-amber: var(--art-amber);
+  --color-art-terracotta: var(--art-terracotta);
+  --color-art-sage: var(--art-sage);
+  --color-art-rust: var(--art-rust);
+  --color-art-forest: var(--art-forest);
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-fraunces);
+}
+
+body {
+  background: var(--background);
+  color: var(--text-primary);
+}
