@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Lora } from "next/font/google";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import GrainOverlay from "@/components/ui/GrainOverlay";
 import "./globals.css";
 
 const lora = Lora({
@@ -57,6 +58,7 @@ export default function RootLayout({children,}: Readonly<{
       className="min-h-full flex flex-col bg-background text-primary font-sans"
     >
     {children}
+    <GrainOverlay />
     <ThemeToggle />
     </body>
     </html>
