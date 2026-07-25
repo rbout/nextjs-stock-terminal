@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 import Card from "@/components/ui/Card";
 import Checkbox from "@/components/ui/Checkbox";
@@ -11,8 +12,62 @@ import Input from "@/components/ui/Input";
 type Mode = "sign-in" | "sign-up";
 
 export default function AuthCard() {
+  const router = useRouter();
   const [mode, setMode] = useState<Mode>("sign-in");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const isSignIn = mode === "sign-in";
+
+  function switchMode(next: Mode) {
+    setMode(next);
+    setError(null);
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+
+    if (isSignIn) {
+      // No sign-in endpoint yet
+      setError("Sign in isn't wired up yet.");
+      return;
+    }
+
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirmPassword");
+
+    if (password !== confirmPassword) {
+      setError("Passwords don't match.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      router.push("/");
+      router.refresh();
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <Card className="w-full max-w-110 overflow-hidden rounded-3xl border-none p-8 shadow-md">
@@ -28,7 +83,7 @@ export default function AuthCard() {
             {isSignIn ? "Sign in to your account" : "Create your account"}
           </h1>
 
-          <form className="mt-6 flex flex-col gap-5">
+          <form className="mt-6 flex flex-col gap-5" onSubmit={handleSubmit}>
             {!isSignIn && (
               <Input
                 id="name"
@@ -89,11 +144,24 @@ export default function AuthCard() {
               />
             )}
 
+            {error && (
+              <p role="alert" className="text-sm text-negative">
+                {error}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="cursor-pointer w-full rounded-lg bg-primary/80 py-3 text-sm font-semibold text-background transition-colors hover:bg-primary"
+              disabled={isSubmitting}
+              className="cursor-pointer w-full rounded-lg bg-primary/80 py-3 text-sm font-semibold text-background transition-colors hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {isSignIn ? "Sign in" : "Create account"}
+              {isSubmitting
+                ? isSignIn
+                  ? "Signing in…"
+                  : "Creating account…"
+                : isSignIn
+                  ? "Sign in"
+                  : "Create account"}
             </button>
           </form>
 
@@ -103,7 +171,7 @@ export default function AuthCard() {
                 New to Next.js Stock Terminal?{" "}
                 <button
                   type="button"
-                  onClick={() => setMode("sign-up")}
+                  onClick={() => switchMode("sign-up")}
                   className="cursor-pointer text-accent hover:underline"
                 >
                   Create account
@@ -114,7 +182,7 @@ export default function AuthCard() {
                 Already have an account?{" "}
                 <button
                   type="button"
-                  onClick={() => setMode("sign-in")}
+                  onClick={() => switchMode("sign-in")}
                   className="cursor-pointer text-accent hover:underline"
                 >
                   Sign in
