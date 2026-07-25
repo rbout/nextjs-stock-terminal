@@ -74,7 +74,7 @@
   --color-art-forest: var(--art-forest);
 
   --font-sans: var(--font-inter);
-  --font-serif: var(--font-fraunces);
+  --font-serif: var(--font-lora);
 }
 
 body {

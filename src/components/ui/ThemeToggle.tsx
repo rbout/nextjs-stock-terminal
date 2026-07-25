@@ -48,7 +48,7 @@ export default function ThemeToggle() {
       aria-label={
         theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
       }
-      className="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-card-border bg-card text-primary shadow-md transition-colors hover:bg-background"
+      className="cursor-pointer fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-card-border bg-card text-primary shadow-md transition-colors hover:bg-background"
     >
       {theme === "dark" ? (
         <Moon size={18} aria-hidden="true" />

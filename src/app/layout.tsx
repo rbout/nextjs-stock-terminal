@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
   weight: ["500", "600"],
   display: "swap",
@@ -47,7 +47,7 @@ export default function RootLayout({children,}: Readonly<{
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
+      className={`${lora.variable} ${inter.variable} h-full antialiased`}
     >
     <head>
       <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
