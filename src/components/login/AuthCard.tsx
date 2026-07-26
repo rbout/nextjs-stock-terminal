@@ -27,30 +27,30 @@ export default function AuthCard() {
     event.preventDefault();
     setError(null);
 
-    if (isSignIn) {
-      // No sign-in endpoint yet
-      setError("Sign in isn't wired up yet.");
-      return;
-    }
-
     const formData = new FormData(event.currentTarget);
-    const name = formData.get("name");
     const email = formData.get("email");
     const password = formData.get("password");
-    const confirmPassword = formData.get("confirmPassword");
 
-    if (password !== confirmPassword) {
-      setError("Passwords don't match.");
-      return;
+    if (!isSignIn) {
+      const confirmPassword = formData.get("confirmPassword");
+      if (password !== confirmPassword) {
+        setError("Passwords don't match.");
+        return;
+      }
     }
 
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/auth/signup", {
+      const endpoint = isSignIn ? "/api/auth/signin" : "/api/auth/signup";
+      const payload = isSignIn
+        ? { email, password }
+        : { name: formData.get("name"), email, password };
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
